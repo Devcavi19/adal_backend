@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pinecone
+litellm
+pymupdf
+python-dotenv
