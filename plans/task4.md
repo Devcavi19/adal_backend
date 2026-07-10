@@ -110,10 +110,10 @@ FRONTEND_ORIGIN=http://localhost:5173
 - [x] Implement `app/config.py` (env-driven settings, load `.env`) — done; also covers embedding + chat-model settings needed by Task 3 and this task.
 - [x] Implement `app/vectorstore.py` (Pinecone client + query helper) — done in [[task3]], reused as-is here (`vectorstore.query`).
 - [x] Implement `app/llm.py` — done, but reshaped per §4.3: native-Ollama chat/embeddings + LiteLLM only for cloud models, model-menu validation, single-hop fallback instead of a full chain.
-- [ ] Implement `app/rag.py` (`answer()` combining retrieval + system prompt + `llm.chat()`) — still a one-line stub.
-- [ ] Implement `app/main.py`: FastAPI app, CORS middleware, `POST /api/chat`, `GET /api/health`, `GET /api/models` — still a one-line stub.
-- [ ] Write the system prompt (Adal persona, grounding rules, citation instructions).
-- [ ] Run `uvicorn app.main:app --reload --port 8000` and exercise `/api/chat` via `/docs`.
+- [x] Implement `app/rag.py` (`answer()` combining retrieval + system prompt + `llm.chat()`) — done.
+- [x] Implement `app/main.py`: FastAPI app, CORS middleware, `POST /api/chat`, `GET /api/health`, `GET /api/models` — done. Also adds `config.FRONTEND_ORIGIN` (was referenced by the plan's `.env.example` but missing from `config.py`) and a 400 for a `model` not in `LLM_MODELS`.
+- [x] Write the system prompt (Adal persona, grounding rules, citation instructions) — in `rag.SYSTEM_PROMPT`.
+- [x] Run `uvicorn app.main:app --reload --port 8000` and exercise `/api/chat` via `/docs` — verified via curl: `/api/health`, `/api/models`, a grounded+cited thesis question, a general-knowledge citation-formatting question, and rejection of an unlisted `model`.
 
 ## Done when
 `/api/chat` returns a grounded, cited answer for a question about the sample thesis, `/api/health` reports the active model, and `/api/models` lists the selectable chat models.

@@ -78,6 +78,9 @@ OLLAMA_THINK = os.getenv("OLLAMA_THINK", "false").strip().lower() in ("1", "true
 # Max answer length (tokens) for a chat generation.
 LLM_NUM_PREDICT = int(os.getenv("LLM_NUM_PREDICT", "512"))
 
+# --- API ----------------------------------------------------------------
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173").strip()
+
 
 def require_pinecone_key() -> str:
     """Return the Pinecone API key or raise a clear error if it is unset."""
