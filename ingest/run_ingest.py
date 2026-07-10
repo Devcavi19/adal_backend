@@ -40,8 +40,31 @@ def slugify(name: str) -> str:
     return re.sub(r"-{2,}", "-", s) or "thesis"
 
 
+def load_manifest(path: pathlib.Path = MANIFEST_PATH, raw_dir: pathlib.Path = RAW_DIR) -> dict[str, dict]:
+    """Fail-fast manifest loader (Task 6) -- a typo here should never become
+    an unlabeled vector in Pinecone. Every PDF in ``raw_dir`` must have a
+    row, every row must point at a PDF that still exists, and every row's
+    required fields (title/authors/year/program) must be filled in."""
+    if not path.exists():
+        sys.exit(f"{path} not found -- author it first (see plans/task6.md).")
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = {r["source_file"]: r for r in csv.DictReader(f)}
+
+    pdfs = {p.name for p in raw_dir.glob("*.pdf")}
+    missing = pdfs - rows.keys()
+    stale = rows.keys() - pdfs
+    if missing or stale:
+        sys.exit(f"{path} mismatch -- missing: {missing or '(none)'}, stale: {stale or '(none)'}")
+
+    for name, r in rows.items():
+        if not (r.get("title") and r.get("authors") and str(r.get("year", "")).isdigit() and r.get("program")):
+            sys.exit(f"{path}: bad row for {name} (title/authors/year/program required)")
+    return rows
+
+
 def _manifest_lookup(source_file: str) -> dict | None:
-    """Best-effort read of a manifest row (the fail-fast loader is Task 6)."""
+    """Best-effort single-row read, for the single-PDF/--title dev workflow
+    where a full manifest may not exist yet."""
     if not MANIFEST_PATH.exists():
         return None
     with open(MANIFEST_PATH, newline="", encoding="utf-8-sig") as f:
@@ -51,7 +74,7 @@ def _manifest_lookup(source_file: str) -> dict | None:
     return None
 
 
-def build_meta(pdf_path: pathlib.Path, overrides: dict) -> dict:
+def build_meta(pdf_path: pathlib.Path, overrides: dict, manifest: dict[str, dict] | None = None) -> dict:
     """Assemble chunk metadata: manifest row if present, else derive from the
     filename, with any CLI overrides applied last."""
     source_file = pdf_path.name
@@ -65,7 +88,7 @@ def build_meta(pdf_path: pathlib.Path, overrides: dict) -> dict:
         "program": "",
     }
 
-    row = _manifest_lookup(source_file)
+    row = manifest.get(source_file) if manifest is not None else _manifest_lookup(source_file)
     if row:
         year = row.get("year", "")
         meta.update(
@@ -174,9 +197,15 @@ def main(argv: list[str] | None = None) -> int:
         "program": args.program, "year": args.year,
     }
 
+    target = pathlib.Path(args.target)
+    # directory mode ingests the whole corpus -- require every PDF to have a
+    # clean manifest row. Single-PDF mode (with --title/--program/--year
+    # overrides) stays manifest-optional for one-off/dev runs.
+    manifest = load_manifest(raw_dir=target) if target.is_dir() else None
+
     total = 0
-    for pdf in _iter_pdfs(pathlib.Path(args.target)):
-        meta = build_meta(pdf, overrides)
+    for pdf in _iter_pdfs(target):
+        meta = build_meta(pdf, overrides, manifest)
         try:
             chunks = process_pdf(pdf, meta)
         except ValueError as e:

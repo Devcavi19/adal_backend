@@ -53,12 +53,15 @@ def load_manifest(path="data/manifest.csv") -> dict[str, dict]:
 During ingestion each chunk merges its manifest row into the Pinecone metadata and the context header, e.g. `[Thesis: "IoT-Based Fish Feeder…", BSIT 2023 — Chapter 3: Methodology]`.
 
 ## Steps
-- [ ] Collect all remaining thesis PDFs into `data/raw/`, renamed to `<short-title>-<year>.pdf` (lowercase, hyphens).
-- [ ] Author `data/manifest.csv` with one row per PDF (title, authors, year, program required; adviser/keywords optional).
-- [ ] Run the full extract → clean → chunk pipeline (Task 2) across every PDF in `data/raw/`.
-- [ ] Spot-check a few `data/processed/*.jsonl` files for cleaning quality.
-- [ ] Run `run_ingest.py` to embed and upsert the full corpus into Pinecone (Task 3), confirming the manifest loader's fail-fast checks pass.
-- [ ] Verify `index.describe_index_stats()` reflects the full corpus's vector count.
+- [x] Collect all remaining thesis PDFs into `data/raw/`, renamed to `<short-title>-<year>.pdf` (lowercase, hyphens). 258 of 295 PDFs found in `data/raw/` renamed; metadata auto-extracted from each title page (text pattern: Republic of the Philippines / CSPC / College / Program / Title / "An Undergraduate Thesis" / Degree / Authors / Month Year) via a one-off script rather than by hand — validated against ~50 samples for accuracy before committing.
+- [x] Author `data/manifest.csv` with one row per PDF (title, authors, year, program required; adviser/keywords optional). 258 rows written.
+- [x] Run the full extract → clean → chunk pipeline (Task 2) across every PDF in `data/raw/`. 258/258 processed, 0 skipped, 9142 chunks written to `data/processed/`.
+- [x] Spot-check a few `data/processed/*.jsonl` files for cleaning quality. Context headers, section detection, and chunk boundaries all read cleanly.
+- [x] Run `run_ingest.py` to embed and upsert the full corpus into Pinecone (Task 3), confirming the manifest loader's fail-fast checks pass. Added the strict `load_manifest()` fail-fast loader (sys.exit on missing/stale rows or incomplete required fields), wired into directory-mode ingestion in `run_ingest.py`. Deleted 36 stale vectors from the earlier Task 2/3 sample run (same thesis, old pre-rename slug) before upserting to avoid a duplicate. 9142 vectors upserted.
+- [x] Verify `index.describe_index_stats()` reflects the full corpus's vector count. `{'theses': {'vector_count': 9142}}` — matches chunk count exactly. Sanity query ("What is the research methodology and design of the study?") returns "Chapter 3: Research Methodology" chunks across multiple theses as top hits.
+
+## Held out (37 PDFs, in `data/raw/_needs_review/`)
+Not renamed or ingested this pass — title page has no extractable text (13, fully scanned) or didn't parse cleanly enough to trust authors/title (24). Moving a PDF back to `data/raw/` and adding its manifest row will pick it up on the next ingest run.
 
 ## Done when
-Every thesis PDF in `data/raw/` has a corresponding manifest row and is searchable in Pinecone.
+Every thesis PDF in `data/raw/` has a corresponding manifest row and is searchable in Pinecone. **258/295 done**; 37 held out pending manual metadata (scanned title pages/unparseable front matter — see `data/raw/_needs_review/`).
