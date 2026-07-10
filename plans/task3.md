@@ -5,37 +5,51 @@ Source: `docs/backend-setup-plan.md` — Phase 2, Build order item 3.
 ## Goal
 Create the Pinecone index, upsert the sample thesis, and sanity-check retrieval.
 
+**Embedding decision (locked):** self-managed embeddings via a **local Ollama
+model** — `bge-m3` (**1024 dims, 8192-token context**), called through LiteLLM
+(`ollama/bge-m3`). No per-token cost, no external embedding key.
+> Note: `mxbai-embed-large` (also 1024-dim) was the first pick but its 512-token
+> context can't fit the ~800-token thesis chunks — every chunk overflowed. `bge-m3`
+> keeps the 1024 dimension (index unchanged) with a context long enough for our chunks.
+
+Trade-off: Ollama must be running wherever embeddings happen — at ingest **and**
+at query time (the live API), since the query must be embedded by the same model.
+
 ## 3.1 Create the index
-Serverless, region `us-east-1` (free starter tier):
+Standard serverless index, region `us-east-1` (free starter tier). Handled by
+`app/vectorstore.ensure_index()`:
 ```python
-from pinecone import Pinecone
+from pinecone import Pinecone, ServerlessSpec
 
 pc = Pinecone(api_key=PINECONE_API_KEY)
 pc.create_index(
     name="adal-theses",
-    dimension=1536,                # must match the embedding model
+    dimension=1024,                # locked to mxbai-embed-large
     metric="cosine",
-    spec={"serverless": {"cloud": "aws", "region": "us-east-1"}},
+    spec=ServerlessSpec(cloud="aws", region="us-east-1"),
 )
 ```
 
 Decisions:
 - **One index, one namespace per corpus** (`theses` now; `handbooks`, `faqs` later). Namespaces are free and scope queries.
-- **Dimension is locked to the embedding model** — `text-embedding-3-small` = 1536. Switching embedding models later requires re-embedding everything, so pick once.
-- Alternative that removes one API dependency: create the index **with integrated embeddings** (`pc.create_index_for_model(..., embed={"model": "llama-text-embed-v2"})`) and upsert raw text — Pinecone embeds server-side, and queries embed automatically. Recommended for the minimum moving parts.
+- **Dimension is locked to the embedding model** — `mxbai-embed-large` = 1024. Switching embedding models later requires recreating the index and re-embedding everything, so pick once.
+- **Standard (self-managed) index**, not integrated — we supply vectors embedded locally. (Pinecone's integrated `create_index_for_model` was considered but rejected in favour of a fully local, no-cost embedding path.)
 
-## 3.2 Upsert (`ingest/run_ingest.py`)
+## 3.2 Upsert (`ingest/run_ingest.py --upsert`)
+```
+python -m ingest.run_ingest --upsert            # data/processed/*.jsonl -> Pinecone
+```
+Flow (`upsert_processed` -> `app.vectorstore.upsert_chunks`):
 ```python
-# pseudocode of the CLI flow
 for jsonl_file in data/processed/*.jsonl:
-    chunks = load(jsonl_file)
-    vectors = embed_batch([c["text"] for c in chunks])   # litellm.embedding(), batches of 100
+    chunks  = load(jsonl_file)
+    vectors = embed_texts([c["text"] for c in chunks])   # litellm ollama, batched
     index.upsert(
-        vectors=[(c["id"], v, metadata(c)) for c, v in zip(chunks, vectors)],
+        vectors=[{"id": c["id"], "values": v, "metadata": meta(c)} for c, v in ...],
         namespace="theses",
     )
 ```
-- Batch upserts (100 per call).
+- Batch upserts (100 per call); chunk text is stored in metadata so a match returns the passage directly.
 - Make the script **idempotent**: deterministic IDs (`slug__section__n`) mean re-running an updated thesis overwrites its old chunks.
 - Verify with `index.describe_index_stats()` — vector count should match chunk count.
 
@@ -50,9 +64,9 @@ results = index.query(
 Keep `top_k=5` and drop matches below ~0.35 cosine score — fewer, better chunks = faster + cheaper LLM calls and fewer hallucinated citations.
 
 ## Steps
-- [ ] Create the `adal-theses` Pinecone index (serverless, `us-east-1`, dimension matching the embedding model).
-- [ ] Decide: self-managed embeddings (LiteLLM `text-embedding-3-small`) vs. Pinecone integrated embeddings.
-- [ ] Implement `ingest/run_ingest.py` to upsert the sample thesis's chunks in batches of 100.
+- [x] Decide embeddings: local Ollama `mxbai-embed-large` (1024) via LiteLLM, self-managed vectors.
+- [ ] Create the `adal-theses` Pinecone index (serverless `us-east-1`, dimension 1024) — `ensure_index()`.
+- [ ] Implement `ingest/run_ingest.py --upsert` to upsert the sample thesis's chunks in batches of 100.
 - [ ] Run the ingest CLI against the sample thesis's processed `.jsonl`.
 - [ ] Verify vector count via `index.describe_index_stats()` matches the chunk count.
 - [ ] Sanity-query it, e.g. `"what is the methodology of <thesis>?"`, and confirm it returns Chapter 3 chunks.

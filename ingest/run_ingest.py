@@ -4,13 +4,15 @@ Phase 1 (this task): extract -> clean -> chunk each PDF into an inspectable
 ``data/processed/<slug>.jsonl`` -- one JSON object per chunk -- so cleaning
 quality can be eyeballed before paying for embeddings.
 
-Phase 2 (Task 3) will extend this CLI to embed those chunks and upsert them into
-Pinecone; the offline text stage above stays unchanged.
+Phase 2 (Task 3): ``--upsert`` embeds the processed ``.jsonl`` chunks with the
+local Ollama model (via LiteLLM) and upserts them into Pinecone. The offline
+text stage above stays unchanged.
 
 Usage:
-    python -m ingest.run_ingest data/raw                       # every PDF
-    python -m ingest.run_ingest "data/raw/one thesis.pdf"      # a single PDF
+    python -m ingest.run_ingest data/raw                       # every PDF -> JSONL
+    python -m ingest.run_ingest "data/raw/one thesis.pdf"      # a single PDF -> JSONL
     python -m ingest.run_ingest "data/raw/x.pdf" --title "…" --program BSIT --year 2023
+    python -m ingest.run_ingest --upsert                       # JSONL -> Pinecone
 """
 
 import argparse
@@ -112,6 +114,32 @@ def write_jsonl(chunks: list[dict], slug: str) -> pathlib.Path:
     return out
 
 
+def _load_jsonl(path: pathlib.Path) -> list[dict]:
+    with open(path, encoding="utf-8") as f:
+        return [json.loads(line) for line in f if line.strip()]
+
+
+def upsert_processed(jsonl_dir: pathlib.Path, namespace: str) -> int:
+    """Embed + upsert every processed ``.jsonl`` in ``jsonl_dir`` into Pinecone."""
+    from app import vectorstore  # lazy: pinecone/litellm only needed for this stage
+
+    files = sorted(jsonl_dir.glob("*.jsonl"))
+    if not files:
+        sys.exit(f"No .jsonl files in {jsonl_dir}/ -- run the PDF stage first.")
+
+    vectorstore.ensure_index()
+    total = 0
+    for jf in files:
+        chunks = _load_jsonl(jf)
+        n = vectorstore.upsert_chunks(chunks, namespace=namespace)
+        total += n
+        print(f"  upsert  {jf.name}  ->  {n} vectors  (ns={namespace})")
+
+    stats = vectorstore.get_index().describe_index_stats()
+    print(f"Done. {total} vectors upserted. Index stats: {stats}")
+    return total
+
+
 def _iter_pdfs(target: pathlib.Path):
     if target.is_dir():
         yield from sorted(target.glob("*.pdf"))
@@ -129,7 +157,17 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--authors")
     ap.add_argument("--program")
     ap.add_argument("--year", type=int)
+    ap.add_argument("--upsert", action="store_true",
+                    help="embed processed JSONL and upsert to Pinecone (skips PDF stage)")
+    ap.add_argument("--jsonl-dir", default=str(PROCESSED_DIR),
+                    help="directory of processed .jsonl to upsert (default: data/processed)")
+    ap.add_argument("--namespace", default="theses",
+                    help="Pinecone namespace to upsert into (default: theses)")
     args = ap.parse_args(argv)
+
+    if args.upsert:
+        upsert_processed(pathlib.Path(args.jsonl_dir), args.namespace)
+        return 0
 
     overrides = {
         "title": args.title, "authors": args.authors,
