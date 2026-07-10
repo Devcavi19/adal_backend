@@ -47,6 +47,23 @@ OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").strip()
 EMBED_BATCH = int(os.getenv("EMBED_BATCH", "64"))
 UPSERT_BATCH = int(os.getenv("UPSERT_BATCH", "100"))
 
+# --- Retrieval --------------------------------------------------------------
+# Chunks fetched per query and the cosine-score floor below which matches are
+# dropped. Fewer, better chunks = faster + cheaper LLM calls and fewer
+# hallucinated citations. bge-m3 cosine scores are compressed: unrelated text
+# (greetings, off-topic) lands at ~0.44-0.49 and real matches at ~0.55-0.75,
+# so 0.50 keeps relevant chunks while sending no context for smalltalk or
+# general librarian questions. (The plan's 0.35 baseline filtered nothing.)
+RETRIEVAL_TOP_K = int(os.getenv("RETRIEVAL_TOP_K", "5"))
+RETRIEVAL_MIN_SCORE = float(os.getenv("RETRIEVAL_MIN_SCORE", "0.50"))
+# Floor used when a metadata filter (program/year) scopes the query: the
+# filter already guarantees domain relevance, and browse-style questions
+# ("what BSENTREP studies exist?") match content chunks at only ~0.44-0.49.
+RETRIEVAL_MIN_SCORE_FILTERED = float(os.getenv("RETRIEVAL_MIN_SCORE_FILTERED", "0.40"))
+# Cap chunks per thesis so one paper can't fill every slot -- "what theses
+# cover X?" needs breadth. Query over-fetches, then trims to RETRIEVAL_TOP_K.
+RETRIEVAL_MAX_PER_THESIS = int(os.getenv("RETRIEVAL_MAX_PER_THESIS", "2"))
+
 # --- Chat LLM ---------------------------------------------------------------
 # The chat models a user may pick, in menu order (first = default). Mix local
 # (``ollama/<name>``) and cloud (``mistral/...``, ``gemini/...``) freely: local

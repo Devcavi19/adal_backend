@@ -89,21 +89,46 @@ def upsert_chunks(chunks: list[dict], *, namespace: str | None = None,
     return total
 
 
-def query(text: str, *, top_k: int = 5, namespace: str | None = None,
-          min_score: float = 0.35, metadata_filter: dict | None = None) -> list[dict]:
-    """Embed ``text`` and return the top matches above ``min_score``."""
+def query(text: str, *, top_k: int | None = None, namespace: str | None = None,
+          min_score: float | None = None, metadata_filter: dict | None = None) -> list[dict]:
+    """Embed ``text`` and return the top matches above ``min_score``.
+
+    ``top_k``/``min_score`` default to the tuned ``config.RETRIEVAL_*`` values.
+    Over-fetches and keeps at most ``RETRIEVAL_MAX_PER_THESIS`` chunks per title
+    so a single thesis cannot fill every slot.
+    """
     from .llm import embed_query
 
     namespace = namespace or config.DEFAULT_NAMESPACE
+    top_k = top_k if top_k is not None else config.RETRIEVAL_TOP_K
+    if min_score is None:
+        # A caller-supplied filter means the query is explicitly scoped, so a
+        # lower floor is safe (the filter already guarantees relevance).
+        min_score = (config.RETRIEVAL_MIN_SCORE_FILTERED if metadata_filter
+                     else config.RETRIEVAL_MIN_SCORE)
+    # References sections are bibliography lists: lexically rich (they score
+    # well) but content-free, so they push the LLM to guess. Always exclude.
+    flt = {"section": {"$ne": "References"}, **(metadata_filter or {})}
     res = get_index().query(
         vector=embed_query(text),
-        top_k=top_k,
+        top_k=top_k * max(config.RETRIEVAL_MAX_PER_THESIS, 1),
         namespace=namespace,
         include_metadata=True,
-        filter=metadata_filter,
+        filter=flt,
     )
-    return [
-        {"id": m["id"], "score": m["score"], **(m.get("metadata") or {})}
-        for m in res.get("matches", [])
-        if m["score"] >= min_score
-    ]
+    per_title: dict = {}
+    out = []
+    for m in res.get("matches", []):
+        if m["score"] < min_score:
+            continue
+        meta = m.get("metadata") or {}
+        title = meta.get("title")
+        if per_title.get(title, 0) >= config.RETRIEVAL_MAX_PER_THESIS:
+            continue
+        per_title[title] = per_title.get(title, 0) + 1
+        if isinstance(meta.get("year"), float):  # Pinecone returns numbers as floats
+            meta["year"] = int(meta["year"])
+        out.append({"id": m["id"], "score": m["score"], **meta})
+        if len(out) >= top_k:
+            break
+    return out

@@ -34,11 +34,22 @@ MODEL_CHAIN = os.getenv("LLM_MODELS", "gemini/gemini-2.5-flash,gpt-5-mini,claude
 - Adjust via `.env`'s `LLM_MODELS` — no code change needed.
 
 ## Steps
-- [ ] Run a set of representative test questions (including out-of-scope ones) against `/api/chat`.
-- [ ] Iterate on the system prompt until grounding behavior and citation style are correct.
-- [ ] Experiment with `top_k` and the cosine score cutoff; check retrieval precision vs. recall.
-- [ ] Try metadata filters (`program`, `year`) for scoped queries.
-- [ ] Reorder `LLM_MODELS` in `.env` to balance cost vs. quality; confirm fallback triggers correctly when the primary model errors.
+- [x] Run a set of representative test questions (including out-of-scope ones) against `/api/chat`.
+      (`python -m scripts.eval_rag [--answers]` — 11 questions: in-scope, scoped, out-of-scope, librarian skills, smalltalk.)
+- [x] Iterate on the system prompt until grounding behavior and citation style are correct.
+      (Fixed school name to Camarines Sur Polytechnic Colleges; added no-speculation rule for
+      title-only excerpts, greeting behavior, and integer years in citations.)
+- [x] Experiment with `top_k` and the cosine score cutoff; check retrieval precision vs. recall.
+      (bge-m3 cosine scores are compressed: noise ~0.44-0.49, real matches ~0.55-0.75, so the
+      0.35 baseline filtered nothing. Now `RETRIEVAL_MIN_SCORE=0.50` unfiltered / `0.40` when a
+      metadata filter scopes the query; `References` sections always excluded; at most
+      `RETRIEVAL_MAX_PER_THESIS=2` chunks per thesis for breadth.)
+- [x] Try metadata filters (`program`, `year`) for scoped queries.
+      (`rag.infer_filter` maps program codes/names and year phrases -- "since", "before",
+      "between X and Y" -- to Pinecone filters automatically.)
+- [x] Reorder `LLM_MODELS` in `.env` to balance cost vs. quality; confirm fallback triggers correctly when the primary model errors.
+      (Free local `ollama/qwen3.5` first, cloud Mistral second; verified a failing primary
+      falls back to the local model and that Mistral answers when picked.)
 
 ## Done when
 Answers are consistently grounded and correctly cited, retrieval returns relevant chunks with low noise, and the fallback chain has a sensible cost-ordered default.
