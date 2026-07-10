@@ -47,6 +47,37 @@ OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").strip()
 EMBED_BATCH = int(os.getenv("EMBED_BATCH", "64"))
 UPSERT_BATCH = int(os.getenv("UPSERT_BATCH", "100"))
 
+# --- Chat LLM ---------------------------------------------------------------
+# The chat models a user may pick, in menu order (first = default). Mix local
+# (``ollama/<name>``) and cloud (``mistral/...``, ``gemini/...``) freely: local
+# Ollama models are free + private; cloud models cost per token but need no GPU.
+# The API exposes this list to the frontend and validates every requested model
+# against it -- the client must never be able to run an unlisted (costly) model.
+LLM_MODELS = [m.strip() for m in os.getenv(
+    "LLM_MODELS", "ollama/qwen3.5:latest,mistral/mistral-small-latest").split(",") if m.strip()]
+
+# Human labels for the frontend dropdown; unknown ids fall back to the id itself.
+MODEL_LABELS = {
+    "ollama/qwen3.5:latest": "Qwen 3.5 (local · fast · free)",
+    "ollama/llama3.1:8b": "Llama 3.1 8B (local · free)",
+    "mistral/mistral-small-latest": "Mistral Small (cloud)",
+    "mistral/mistral-medium-latest": "Mistral Medium (cloud)",
+    "mistral/mistral-large-latest": "Mistral Large (cloud)",
+    "gemini/gemini-2.5-flash": "Gemini 2.5 Flash (cloud)",
+}
+
+# Default model when a request names none, and a last-resort fallback tried if the
+# chosen model errors (a local model is ideal here -- free and always available).
+DEFAULT_CHAT_MODEL = os.getenv("DEFAULT_CHAT_MODEL", LLM_MODELS[0] if LLM_MODELS else "").strip()
+CHAT_FALLBACK_MODEL = os.getenv("CHAT_FALLBACK_MODEL", "ollama/qwen3.5:latest").strip()
+
+# "Thinking" Ollama models (qwen3.x, ...) emit a long reasoning trace before the
+# answer -- slow, and often empty within a token budget. Off by default for RAG.
+OLLAMA_THINK = os.getenv("OLLAMA_THINK", "false").strip().lower() in ("1", "true", "yes")
+
+# Max answer length (tokens) for a chat generation.
+LLM_NUM_PREDICT = int(os.getenv("LLM_NUM_PREDICT", "512"))
+
 
 def require_pinecone_key() -> str:
     """Return the Pinecone API key or raise a clear error if it is unset."""
