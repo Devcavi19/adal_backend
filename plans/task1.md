@@ -6,7 +6,7 @@ Source: `docs/backend-setup-plan.md` — Repository layout, Build order item 1.
 Create the `adal_backend/` repo skeleton with its Python environment and config files.
 
 ## Steps
-- [ ] Create the repo layout:
+- [x] Create the repo layout:
   ```
   adal_backend/
   ├── app/
@@ -27,8 +27,8 @@ Create the `adal_backend/` repo skeleton with its Python environment and config 
   ├── requirements.txt
   └── README.md
   ```
-- [ ] Set up a Python 3.12 virtual environment.
-- [ ] Create `requirements.txt`:
+- [x] Set up a Python 3.12 virtual environment.
+- [x] Create `requirements.txt`:
   ```txt
   fastapi
   uvicorn[standard]
@@ -37,9 +37,9 @@ Create the `adal_backend/` repo skeleton with its Python environment and config 
   pymupdf
   python-dotenv
   ```
-- [ ] Install dependencies (`pip install -r requirements.txt`).
-- [ ] Create `.env.example` (see Task 4 for full contents) and a local `.env` (gitignored).
-- [ ] Add `data/raw/` and `.env` to `.gitignore`.
+- [x] Install dependencies (`pip install -r requirements.txt`).
+- [x] Create `.env.example` (see Task 4 for full contents) and a local `.env` (gitignored).
+- [x] Add `data/raw/` and `.env` to `.gitignore`.
 
 ## Done when
 `pip install -r requirements.txt` succeeds and the folder structure above exists (empty stub files are fine).
