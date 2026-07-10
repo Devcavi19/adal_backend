@@ -50,11 +50,11 @@ Write output to `data/processed/<thesis-slug>.jsonl` — one JSON object per chu
 - Capture title/authors/year/program once per PDF via `manifest.csv` (see Task 6) rather than parsing title pages automatically.
 
 ## Steps
-- [ ] Implement `extract_pages()` in `ingest/extract.py`.
-- [ ] Implement the 6 cleaning rules in `ingest/clean.py`.
-- [ ] Implement section-aware chunking with overlap in `ingest/chunk.py`.
-- [ ] Run the pipeline on **one sample thesis PDF**.
-- [ ] Manually inspect `data/processed/<slug>.jsonl` until chunks read cleanly (no boilerplate, no broken hyphenation, sensible chunk boundaries).
+- [x] Implement `extract_pages()` in `ingest/extract.py`.
+- [x] Implement the 6 cleaning rules in `ingest/clean.py`.
+- [x] Implement section-aware chunking with overlap in `ingest/chunk.py`.
+- [x] Run the pipeline on **one sample thesis PDF**.
+- [x] Manually inspect `data/processed/<slug>.jsonl` until chunks read cleanly (no boilerplate, no broken hyphenation, sensible chunk boundaries).
 
 ## Done when
 One sample thesis produces a clean, readable `.jsonl` file with correctly bounded chunks and context headers.
