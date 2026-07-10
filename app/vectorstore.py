@@ -26,10 +26,22 @@ def client() -> Pinecone:
 
 
 def ensure_index(*, wait: bool = True) -> None:
-    """Create the configured index if it does not exist yet (idempotent)."""
+    """Create the configured index if it does not exist yet (idempotent).
+
+    If the index already exists but its dimension differs from the configured
+    ``EMBED_DIM`` (e.g. the embedding model changed), raise instead of silently
+    upserting mismatched vectors -- fixing it means recreating the index.
+    """
     pc = client()
     existing = {ix["name"] for ix in pc.list_indexes()}
     if config.PINECONE_INDEX in existing:
+        dim = pc.describe_index(config.PINECONE_INDEX).dimension
+        if dim != config.EMBED_DIM:
+            raise RuntimeError(
+                f"Index '{config.PINECONE_INDEX}' has dimension {dim} but "
+                f"EMBED_DIM is {config.EMBED_DIM} (model {config.EMBEDDING_MODEL}). "
+                f"Delete and recreate the index, or align EMBED_DIM to the model."
+            )
         return
     pc.create_index(
         name=config.PINECONE_INDEX,

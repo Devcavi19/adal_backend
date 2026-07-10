@@ -2,5 +2,6 @@ fastapi
 uvicorn[standard]
 pinecone
 litellm
+requests
 pymupdf
 python-dotenv

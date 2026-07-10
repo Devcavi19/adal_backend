@@ -64,12 +64,12 @@ results = index.query(
 Keep `top_k=5` and drop matches below ~0.35 cosine score — fewer, better chunks = faster + cheaper LLM calls and fewer hallucinated citations.
 
 ## Steps
-- [x] Decide embeddings: local Ollama `mxbai-embed-large` (1024) via LiteLLM, self-managed vectors.
-- [ ] Create the `adal-theses` Pinecone index (serverless `us-east-1`, dimension 1024) — `ensure_index()`.
-- [ ] Implement `ingest/run_ingest.py --upsert` to upsert the sample thesis's chunks in batches of 100.
-- [ ] Run the ingest CLI against the sample thesis's processed `.jsonl`.
-- [ ] Verify vector count via `index.describe_index_stats()` matches the chunk count.
-- [ ] Sanity-query it, e.g. `"what is the methodology of <thesis>?"`, and confirm it returns Chapter 3 chunks.
+- [x] Decide embeddings: local Ollama `bge-m3` (1024) via native `/api/embed`, self-managed vectors. (Switched from LiteLLM: its sync `embedding()` reuses a module-level async client whose event loop closes between calls, so multi-batch upserts failed intermittently with "Event loop is closed".)
+- [x] Create the `adal-theses` Pinecone index (serverless `us-east-1`, dimension 1024) — `ensure_index()` (now guards against a dimension/model mismatch).
+- [x] Implement `ingest/run_ingest.py --upsert` to upsert the sample thesis's chunks in batches of 100.
+- [x] Run the ingest CLI against the sample thesis's processed `.jsonl` — `AB ELS 4A_Rhetorical Analysis…` → 36 chunks.
+- [x] Verify vector count via `index.describe_index_stats()` matches the chunk count — 36 chunks = 36 vectors (ns=`theses`).
+- [x] Sanity-query it — `"What is the research methodology and design of the study?"` → top hit (0.557) is the "Chapter 2: Research Methods" chapter (this thesis puts methodology in Ch. 2).
 
 ## Done when
 The sample thesis's chunks are searchable in Pinecone and a methodology-style query returns the correct chapter.

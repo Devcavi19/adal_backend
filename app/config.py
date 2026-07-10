@@ -30,11 +30,15 @@ PINECONE_METRIC = os.getenv("PINECONE_METRIC", "cosine").strip()
 DEFAULT_NAMESPACE = os.getenv("PINECONE_NAMESPACE", "theses").strip()
 
 # --- Embeddings -------------------------------------------------------------
-# Local Ollama model served via LiteLLM (model id form: "ollama/<name>").
+# Local Ollama model, called through Ollama's native /api/embed endpoint. The
+# "ollama/<name>" prefix is optional and stripped before the call (kept so the
+# id reads the same as the LiteLLM chat models).
 # The index dimension is LOCKED to this model's output width -- switching models
 # later means recreating the index and re-embedding everything.
-# bge-m3: 1024-dim, 8192-token context (mxbai-embed-large's 512-token limit is
-# too small for the ~800-token thesis chunks).
+# bge-m3: 1024-dim, 8192-token context. Chosen to match the existing 1024-dim
+# Pinecone index. (nomic-embed-text is faster at 768-dim but would need the
+# index recreated; mxbai-embed-large is 1024 but its 512-token context is too
+# short for the ~800-token chunks.)
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "ollama/bge-m3").strip()
 EMBED_DIM = int(os.getenv("EMBED_DIM", "1024"))
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").strip()
