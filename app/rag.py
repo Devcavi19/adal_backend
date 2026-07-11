@@ -8,7 +8,7 @@ SYSTEM_PROMPT = """You are Adal, the academic librarian assistant of Camarines S
 
 Grounding rules:
 - For questions about CSPC research (theses/capstones), answer ONLY from the thesis
-  context below. Never invent titles, authors, findings, or figures.
+  context provided with the question. Never invent titles, authors, findings, or figures.
 - Cite thesis titles inline as *Title* (Year), and only cite titles that appear in the
   context. The context holds short excerpts, not full theses -- report what the excerpts
   say and do not extrapolate beyond them. If an excerpt shows little more than a thesis
@@ -21,6 +21,17 @@ Grounding rules:
   answer from your own knowledge; no thesis context is needed.
 - For greetings or small talk, reply briefly and offer to help find CSPC research.
 - Keep answers concise and written in markdown."""
+
+CONDENSE_PROMPT = """Rewrite the user's latest message as a short standalone search query \
+for a thesis database, resolving references like "it", "the second one", or "those studies" \
+from the conversation into the actual topics or titles they point to. Keep any program \
+names/codes and years. If the message is already self-contained (or is a greeting), return \
+it unchanged. Output ONLY the query text, nothing else."""
+
+# Per-turn cap when embedding history into the condense prompt: previous answers
+# can be long, and only their gist is needed to resolve references.
+_CONDENSE_TURN_CHARS = 500
+_CONDENSE_NUM_PREDICT = 64
 
 # Program codes present in the corpus metadata (see data/manifest.csv), plus
 # unambiguous full names users are likely to type. Used to scope retrieval.
@@ -99,9 +110,66 @@ def dedupe_sources(chunks: list[dict]) -> list[dict]:
     return sources
 
 
+def condense_query(message: str, history: list[dict]) -> str:
+    """``message`` rewritten as a standalone retrieval query, given ``history``.
+
+    Follow-ups like "tell me more about the second one" embed as meaningless
+    vectors and match nothing, so a small LLM call resolves them against the
+    conversation first. First turns (no history) and any condensation failure
+    fall back to the original message -- retrieval must never break over this.
+    """
+    if not history:
+        return message
+    transcript = "\n".join(
+        f"{m.get('role', 'user')}: {m.get('content', '')[:_CONDENSE_TURN_CHARS]}"
+        for m in history
+    )
+    prompt = f"Conversation so far:\n{transcript}\n\nLatest user message: {message}"
+    try:
+        reply = llm.chat(
+            [{"role": "system", "content": CONDENSE_PROMPT},
+             {"role": "user", "content": prompt}],
+            num_predict=_CONDENSE_NUM_PREDICT,
+        )
+    except Exception:  # noqa: BLE001 -- condensation is best-effort
+        return message
+    # First non-empty line only: drops any trailing chatter or the truncation
+    # notice appended when the 64-token cap is hit.
+    lines = [ln.strip().strip('"') for ln in reply.splitlines()]
+    condensed = next((ln for ln in lines if ln), "")
+    return condensed or message
+
+
+def retrieve(message: str, history: list[dict] | None = None) -> list[dict]:
+    """The context chunks for ``message`` (condensed against ``history`` and
+    scoped by any inferred filter)."""
+    query = condense_query(message, history or [])
+    return vectorstore.query(query, metadata_filter=infer_filter(query))
+
+
+def build_messages(message: str, history: list[dict], chunks: list[dict]) -> list[dict]:
+    """Chat messages with the retrieved context appended to the *user* message.
+
+    Keeping the system prompt and history byte-identical across turns lets
+    Ollama reuse its KV cache for that prefix; only the new user message (with
+    its per-query context) is prefilled. Context in the system prompt would
+    invalidate the cache from token zero on every turn.
+    """
+    user = message + format_context(chunks)
+    return [{"role": "system", "content": SYSTEM_PROMPT}, *history, {"role": "user", "content": user}]
+
+
 def answer(message: str, history: list[dict], *, model: str | None = None) -> dict:
-    chunks = vectorstore.query(message, metadata_filter=infer_filter(message))
-    system = SYSTEM_PROMPT + format_context(chunks)
-    messages = [{"role": "system", "content": system}, *history, {"role": "user", "content": message}]
-    reply = llm.chat(messages, model=model)
+    chunks = retrieve(message, history)
+    reply = llm.chat(build_messages(message, history, chunks), model=model)
     return {"text": reply, "sources": dedupe_sources(chunks)}
+
+
+def answer_stream(message: str, history: list[dict], *, chunks: list[dict],
+                  model: str | None = None):
+    """Yield answer pieces for pre-retrieved ``chunks`` (see ``retrieve``).
+
+    Retrieval stays with the caller so it can send the sources to the client
+    before generation starts.
+    """
+    yield from llm.chat_stream(build_messages(message, history, chunks), model=model)

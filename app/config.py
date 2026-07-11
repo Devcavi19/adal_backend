@@ -92,8 +92,24 @@ CHAT_FALLBACK_MODEL = os.getenv("CHAT_FALLBACK_MODEL", "ollama/qwen3.5:latest").
 # answer -- slow, and often empty within a token budget. Off by default for RAG.
 OLLAMA_THINK = os.getenv("OLLAMA_THINK", "false").strip().lower() in ("1", "true", "yes")
 
-# Max answer length (tokens) for a chat generation.
-LLM_NUM_PREDICT = int(os.getenv("LLM_NUM_PREDICT", "512"))
+# Max answer length (tokens) for a chat generation. Long answers (markdown
+# lists of theses with citations) overflow 512 and get cut off mid-sentence,
+# so leave headroom; OLLAMA_NUM_CTX comfortably covers prompt + answer.
+LLM_NUM_PREDICT = int(os.getenv("LLM_NUM_PREDICT", "1536"))
+
+# Context window Ollama allocates for the chat model. Without this Ollama uses
+# the model's maximum (262K for qwen3.5 = ~14 GB of KV cache on top of the
+# weights). 16K comfortably fits the ~6.5K-token RAG prompt plus history.
+OLLAMA_NUM_CTX = int(os.getenv("OLLAMA_NUM_CTX", "16384"))
+
+# How long Ollama keeps models in memory after a request. Default -1 = forever,
+# so no user pays the multi-second model reload after an idle period. Accepts
+# seconds (int) or an Ollama duration string like "2h".
+_keep_alive = os.getenv("OLLAMA_KEEP_ALIVE", "-1").strip()
+try:
+    OLLAMA_KEEP_ALIVE: int | str = int(_keep_alive)
+except ValueError:
+    OLLAMA_KEEP_ALIVE = _keep_alive
 
 # --- API ----------------------------------------------------------------
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173").strip()
