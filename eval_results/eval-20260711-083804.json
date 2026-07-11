@@ -1,0 +1,731 @@
+{
+  "timestamp": "2026-07-11T08:38:04.846899+08:00",
+  "answer_model": "ollama/qwen3.5:latest",
+  "judge_model": "ollama/qwen3.5:latest",
+  "retrieval_config": {
+    "top_k": 5,
+    "min_score": 0.5,
+    "min_score_filtered": 0.4,
+    "max_per_thesis": 2
+  },
+  "summary": {
+    "hit_rate": 0.9375,
+    "mean_recall": 0.9111111111111111,
+    "oos_rejection_rate": 0.0,
+    "clean_context_rate": 1.0,
+    "filter_accuracy": 1.0,
+    "context_precision": 0.8729166666666668,
+    "faithfulness": 0.9,
+    "mean_answer_relevance": 4.85,
+    "counts": {
+      "retrieval": 16,
+      "out_of_scope": 2,
+      "general_smalltalk": 2,
+      "judged_answers": 20
+    }
+  },
+  "cases": [
+    {
+      "id": "time-mgmt-nursing",
+      "kind": "retrieval",
+      "question": "What did CSPC students find about time management and academic performance of nursing students?",
+      "filter": {
+        "program": {
+          "$eq": "BSN"
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.686,
+          "source_file": "characterizing-clinical-instructors-basis-effective-clinical-2023.pdf",
+          "title": "CHARACTERIZING CLINICAL INSTRUCTORS : BASIS FOR AN EFFECTIVE CLINICAL TEACHING-L"
+        },
+        {
+          "score": 0.686,
+          "source_file": "academic-performance-4th-year-bachelor-science-2023.pdf",
+          "title": "ACADEMIC PERFORMANCE OF THE 4th YEAR BACHELOR OF SCIENCE IN NURSING STUDENTS OF "
+        },
+        {
+          "score": 0.68,
+          "source_file": "academic-performance-4th-year-bachelor-science-2023.pdf",
+          "title": "ACADEMIC PERFORMANCE OF THE 4th YEAR BACHELOR OF SCIENCE IN NURSING STUDENTS OF "
+        },
+        {
+          "score": 0.677,
+          "source_file": "challenges-encountered-bachelor-science-nursing-students-2023-2.pdf",
+          "title": "CHALLENGES ENCOUNTERED BY BACHELOR OF SCIENCE IN NURSING STUDENTS OF CAMARINES S"
+        },
+        {
+          "score": 0.673,
+          "source_file": "job-satisfaction-clinical-instructors-camarines-sur-2023.pdf",
+          "title": "JOB SATISFACTION OF CLINICAL INSTRUCTORS AT CAMARINES SUR POLYTECHNIC COLLEGES, "
+        }
+      ],
+      "hit": false,
+      "recall": 0.0,
+      "answer": "Based on the provided thesis contexts, I couldn't find specific findings linking **time management** directly to the **academic performance** of nursing students at Camarines Sur Polytechnic Colleges (CSPC).\n\nThe available theses cover the following related topics but do not contain data on time management:\n*   **Academic Performance of the 4th Year BSN Students** (2023): This thesis details grades in professional and RLE subjects, the age and sex profiles of students, and intrinsic/extrinsic factors affecting performance, but the excerpts do not list time management as a studied variable.\n*   **Challenges Encountered by BSN Students in Related Learning Experiences** (2023): This study analyzes personal, emotional, and socioeconomic challenges, as well as coping strategies, but does not explicitly cite \"time management\" in the provided summaries.\n*   **Characterizing Clinical Instructors** (2023) and **Job Satisfaction of Clinical Instructors**: These focus on instructor profiles and satisfaction rather than student study habits or time management.\n\nI couldn't find CSPC theses on that specific topic. Would you like to rephrase the query to focus on general challenges faced by nursing students in clinical rotations or factors affecting academic performance more broadly?",
+      "context_precision": 0.4,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "library-mgmt-systems",
+      "kind": "retrieval",
+      "question": "What theses are about library management systems?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.634,
+          "source_file": "collection-management-unpublished-materials-among-academic-2025.pdf",
+          "title": "COLLECTION MANAGEMENT OF UNPUBLISHED MATERIALS AMONG ACADEMIC LIBRARIES IN CAMAR"
+        },
+        {
+          "score": 0.632,
+          "source_file": "web-based-iriga-city-public-library-management-2023.pdf",
+          "title": "WEB-BASED IRIGA CITY PUBLIC LIBRARY MANAGEMENT SYSTEM WITH QR TECHNOLOGY"
+        },
+        {
+          "score": 0.626,
+          "source_file": "organizational-challenges-managing-local-collection-rinconada-2025.pdf",
+          "title": "ORGANIZATIONAL CHALLENGES IN MANAGING LOCAL COLLECTION IN RINCONADA LIBRARIES"
+        },
+        {
+          "score": 0.622,
+          "source_file": "collection-management-unpublished-materials-among-academic-2025.pdf",
+          "title": "COLLECTION MANAGEMENT OF UNPUBLISHED MATERIALS AMONG ACADEMIC LIBRARIES IN CAMAR"
+        },
+        {
+          "score": 0.608,
+          "source_file": "web-based-iriga-city-public-library-management-2023.pdf",
+          "title": "WEB-BASED IRIGA CITY PUBLIC LIBRARY MANAGEMENT SYSTEM WITH QR TECHNOLOGY"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Based on the thesis context provided, here are the theses and studies found that address **library management systems** or related collection management:\n\n*   **Baran, Bergado, and Taduran (2025)** developed a prototype for an **automated thesis and RRL system** using data mining and focusing on **CSPC Library Cosine Similarity** to find related literature [1].\n*   **Bermillo, Peña, Relles, and Romano (2025)** revealed the need for an automated system to manage and monitor **capstone projects and thesis classes**. This system (developed using PHP, Laravel, and MySQL) included modules for deliverables monitoring, participation rating, oral examination scheduling, and honorarium computation [2].\n*   **WEB-BASED IRIGA CITY PUBLIC LIBRARY MANAGEMENT SYSTEM WITH QR TECHNOLOGY (2023)** addresses the disadvantages of manual systems by proposing a **QR code-based computer information system** to improve borrowing processes, member/collection checking, and report preparation [3].\n*   **Thendral Mary (2018)** studied an **Enhanced Library Management System (ELMS)** divided into administration, librarian, and student modules to manage daily library activities and prevent loss of book or member records [4].\n*   **Ashutosh Tripathi and Ashish Srivastava (2019)** proposed an **Online Library Management System** developed in Java for basic operations such as adding books, updating data, and managing transactions via a web page [5].\n*   **Shanmugam A.P et al. (2020)** studied a **Library Management System** designed to transform traditional libraries into digital ones, allowing librarians to add, view, delete, and update details from the library stock with a single click [6].\n*   **Deo (2019)** focused on **Koha Integrated Library System** as a case study for open-source software in libraries [7].\n*   **Alfora et al. (2020)** examined a **Computerized Library System** specifically for Liceo De Los Baños [8].\n*   **Obsanga and Enierga (2021)** studied an **Automated library management system** for public libraries in the Philippines [9].\n*   **Setiawan, Arpan, and Syahputra (2022)** developed a **Library System Using QR Code Web** based on the CodeIgniter framework [10].\n*   **Dani and Patil (2020)** analyzed a **QR Code-based Library Management System** [11].\n\nNote: While the study **\"COLLECTION MANAGEMENT OF UNPUBLISHED MATERIALS AMONG ACADEMIC LIBRARIES IN CAMARINES SUR (2025)\"** discusses challenges in managing collections and repositories, it primarily reviews literature on collection development rather than detailing a specific management system prototype.",
+      "context_precision": 1.0,
+      "faithful": false,
+      "unsupported_claims": [
+        "Baran, Bergado, and Taduran (2025) developed a prototype for an automated thesis and RRL system",
+        "Bermillo, Peña, Relles, and Romano (2025) revealed the need for an automated system to manage and monitor capstone projects and thesis classes",
+        "Thendral Mary (2018) studied an Enhanced Library Management System (ELMS)",
+        "Alfora et al. (2020) examined a Computerized Library System specifically for Liceo De Los Banos",
+        "Dani and Patil (2020) analyzed a QR Code-based Library Management System",
+        "Obsanga and Enierga (2021) studied an Automated library management system for public libraries in the Philippines",
+        "The study 'COLLECTION MANAGEMENT OF UNPUBLISHED MATERIALS...' primarily reviews literature on collection development rather than detailing a specific management system prototype"
+      ],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "taro-products",
+      "kind": "retrieval",
+      "question": "Are there studies about taro-based food products?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.694,
+          "source_file": "taro-delicacies-2023.pdf",
+          "title": "TARO DELICACIES"
+        },
+        {
+          "score": 0.688,
+          "source_file": "taro-smidgets-2023.pdf",
+          "title": "TARO SMIDGETS"
+        },
+        {
+          "score": 0.686,
+          "source_file": "taro-ice-cream-2023.pdf",
+          "title": "TARO ICE CREAM"
+        },
+        {
+          "score": 0.685,
+          "source_file": "taro-smidgets-2023.pdf",
+          "title": "TARO SMIDGETS"
+        },
+        {
+          "score": 0.677,
+          "source_file": "taro-tart-desiccated-coconut-2024.pdf",
+          "title": "TARO TART WITH DESICCATED COCONUT"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Yes. Based on the provided thesis excerpts, there are several studies about taro-based food products:\n\n*   **TARO ICE CREAM (2023)** focuses on the acceptability of **taro ice cream** flavors and uses taro as a substitute for rice or corn in ice cream formulations, noting its potential to replace wheat flour in baked goods.\n*   **TARO SMIDGETS (2023)** investigates the development of **taro smidgets** and **taro-supplemented cake**, finding that taro flour can reduce caloric content while improving oil and water binding capacity compared to wheat flour.\n*   **TARO DELICACIES (2023)** mentions local products offered in the Bicol Region, specifically **Taro Bread**, **Laing**, **Poi**, **Taro Bruger**, and **Taro Chips**.\n*   **TARO TART WITH DESICCATED COCONUT (2024)** features a **taro tart** product paired with coconut chips/flakes, exploring taro's potential in manufacturing innovative plant-based foods like frozen desserts.\n\nThese theses highlight the versatility of taro (*Colocasia esculenta*) in creating desserts, snack chips, bread, and functional food powders.\n\nWould you like assistance with citing these theses or searching for related topics within the CSPC library collection?",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "bsit-sms",
+      "kind": "retrieval",
+      "question": "What BSIT capstone projects used SMS notifications?",
+      "filter": {
+        "program": {
+          "$eq": "BSIT"
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.591,
+          "source_file": "boardal-web-based-audal-boarding-house-management-2023.pdf",
+          "title": "BOARDAL: WEB-BASED AUDAL BOARDING HOUSE MANAGEMENT SYSTEM WITH SMS NOTIFICATION "
+        },
+        {
+          "score": 0.547,
+          "source_file": "boardal-web-based-audal-boarding-house-management-2023.pdf",
+          "title": "BOARDAL: WEB-BASED AUDAL BOARDING HOUSE MANAGEMENT SYSTEM WITH SMS NOTIFICATION "
+        },
+        {
+          "score": 0.543,
+          "source_file": "cspc-student-event-calendar-system-version-2024.pdf",
+          "title": "CSPC STUDENT EVENT CALENDAR SYSTEM VERSION 3.0"
+        },
+        {
+          "score": 0.534,
+          "source_file": "cspc-student-event-calendar-system-version-2024.pdf",
+          "title": "CSPC STUDENT EVENT CALENDAR SYSTEM VERSION 3.0"
+        },
+        {
+          "score": 0.534,
+          "source_file": "petcare-rayna-animal-care-clinic-information-2024.pdf",
+          "title": "PETCARE: RAYNA ANIMAL CARE CLINIC INFORMATION SYSTEM WITH SMS NOTIFICATION AND A"
+        }
+      ],
+      "filter_ok": true,
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Two BSIT capstone projects from Camarines Sur Polytechnic Colleges (CSPC) specifically used SMS notifications, based on the provided thesis context:\n\n1. **BOARDAL: WEB-BASED AUDAL BOARDING HOUSE MANAGEMENT SYSTEM WITH SMS NOTIFICATION VIA ITEXMO** (2023)\n   - **Context**: This system modernized Audal Boarding House management by integrating SMS notifications via iTexMo. It addressed challenges such as manual payment procedures and data entry errors by automating tenant information management, room assignments, rent collection, and crucially, the delivery of timely SMS notifications to owners and tenants. The system was tested using User Acceptance Testing and Security Testing, achieving high scores of 0.95 and 1.0, respectively.\n\n2. **PETCARE: RAYNA ANIMAL CARE CLINIC INFORMATION SYSTEM WITH SMS NOTIFICATION AND APPOINTMENT SCHEDULER** (2024)\n   - **Context**: This project developed an information system for Rayna Animal Care Clinic that includes an appointment scheduler with automatic SMS confirmations and reminders. The SMS feature aimed to reduce missed appointments and improve communication between the clinic and its clients by sending updates via SMS upon request submission. The system was evaluated using Black Box Testing (User Acceptance, Security, and Stress Testing), resulting in a highly functional User Acceptance score of 0.98.",
+      "context_precision": 0.8,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "bsn-2024-maternal",
+      "kind": "retrieval",
+      "question": "Show me nursing theses from 2024 about maternal healthcare.",
+      "filter": {
+        "program": {
+          "$eq": "BSN"
+        },
+        "year": {
+          "$gte": 2024
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.596,
+          "source_file": "utilization-maternal-healthcare-services-among-women-2024.pdf",
+          "title": "UTILIZATION OF MATERNAL HEALTHCARE SERVICES AMONG WOMEN OF REPRODUCTIVE AGE IN B"
+        },
+        {
+          "score": 0.557,
+          "source_file": "utilization-maternal-healthcare-services-among-women-2024.pdf",
+          "title": "UTILIZATION OF MATERNAL HEALTHCARE SERVICES AMONG WOMEN OF REPRODUCTIVE AGE IN B"
+        },
+        {
+          "score": 0.557,
+          "source_file": "challenges-encountered-coping-strategies-student-parents-2024.pdf",
+          "title": "CHALLENGES ENCOUNTERED AND COPING STRATEGIES OF STUDENT PARENTS IN THE COLLEGE O"
+        }
+      ],
+      "filter_ok": true,
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Based on the provided thesis context, here is the CSPC thesis from 2024 regarding maternal healthcare:\n\n*UTILIZATION OF MATERNAL HEALTHCARE SERVICES AMONG WOMEN OF REPRODUCTIVE AGE IN BARANGAY SAN RAFAEL, BUHI CAMARINES SUR* (2024)\n\n**Context provided:**\nThis study focuses on the utilization of maternal healthcare services among women of reproductive age in Barangay San Rafael, Buhi, Camarines Sur. It reviews related literature covering the extent of usage, accessibility of care services, risks associated with lack of care, and factors affecting women's decisions to avail maternal healthcare. The study references guidelines from the World Health Organization (WHO) regarding antenatal, intrapartum, and postnatal care, as well as data from the Department of Health's Field Health Service Information System (FHSIS) in the Philippines.\n\n**Note:** Another 2024 thesis in the provided context, *CHALLENGES ENCOUNTERED AND COPING STRATEGIES OF STUDENT PARENTS IN THE COLLEGE OF HEALTH SCIENCES OF CAMARINES SUR POLYTECHNIC COLLEGES*, deals with student parents rather than maternal healthcare services utilization.\n\nWould you like help locating additional CSPC research on this topic?",
+      "context_precision": 0.6666666666666666,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "dengue",
+      "kind": "retrieval",
+      "question": "What research did CSPC students do about dengue?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.541,
+          "source_file": "implementation-dengue-prevention-control-program-barangay-2023.pdf",
+          "title": "THE IMPLEMENTATION OF DENGUE PREVENTION AND CONTROL PROGRAM OF BARANGAY MALAWAG,"
+        },
+        {
+          "score": 0.539,
+          "source_file": "knowledge-practices-dengue-fever-among-residents-2024.pdf",
+          "title": "KNOWLEDGE AND PRACTICES ON DENGUE FEVER AMONG THE RESIDENTS OF SELECTED BARANGAY"
+        },
+        {
+          "score": 0.538,
+          "source_file": "knowledge-practices-dengue-fever-among-residents-2024.pdf",
+          "title": "KNOWLEDGE AND PRACTICES ON DENGUE FEVER AMONG THE RESIDENTS OF SELECTED BARANGAY"
+        },
+        {
+          "score": 0.529,
+          "source_file": "implementation-dengue-prevention-control-program-barangay-2023.pdf",
+          "title": "THE IMPLEMENTATION OF DENGUE PREVENTION AND CONTROL PROGRAM OF BARANGAY MALAWAG,"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Based on the provided thesis context, CSPC students conducted the following research regarding dengue:\n\n*   **\"THE IMPLEMENTATION OF DENGUE PREVENTION AND CONTROL PROGRAM OF BARANGAY MALAWAG, NABUA, CAMARINES SUR\" (2023)**\n    This study investigated the preventive measures and control programs implemented in Barangay Malawag, an area identified as having the highest dengue incidence rates in Nabua. The researchers surveyed 355 residents from June 2022 to January 2023 to determine if these programs were adequate and efficient for the public. Additionally, the study focused on the struggle at the local level to eradicate breeding sites, specifically containers stagnant with water (*THE IMPLEMENTATION OF DENGUE PREVENTION AND CONTROL PROGRAM OF BARANGAY MALAWAG, NABUA, CAMARINES SUR* 2023).\n\n*   **\"KNOWLEDGE AND PRACTICES ON DENGUE FEVER AMONG THE RESIDENTS OF SELECTED BARANGAYS IN NABUA, CAMARINES SUR\" (2024)**\n    This thesis assessed how dengue fever is spreading among adults in selected barangays. It analyzed the demographic profiles of respondents—including sex, civil status, and educational attainment—to see how these factors correlate with knowledge levels and preventive practices against the *Aedes aegypti* mosquito (*KNOWLEDGE AND PRACTICES ON DENGUE FEVER AMONG THE RESIDENTS OF SELECTED BARANGAYS IN NABUA, CAMARINES SUR* 2024).",
+      "context_precision": 1.0,
+      "faithful": false,
+      "unsupported_claims": [
+        "The study investigated the preventive measures and control programs implemented in Barangay Malawag, an area identified as having the highest dengue incidence rates in Nabua.",
+        "The researchers surveyed 355 residents from June 2022 to January 2023 to determine if these programs were adequate and efficient for the public.",
+        "The study focused on the struggle at the local level to eradicate breeding sites, specifically containers stagnant with water.",
+        "This thesis assessed how dengue fever is spreading among adults in selected barangays."
+      ],
+      "answer_relevance": 3.0
+    },
+    {
+      "id": "bls-competence",
+      "kind": "retrieval",
+      "question": "Are there studies on basic life support competence?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.707,
+          "source_file": "competence-level-basic-life-support-bls-2023.pdf",
+          "title": "COMPETENCE LEVEL ON BASIC LIFE SUPPORT (BLS) OF THE FACULTY OF THE COLLEGE OF HE"
+        },
+        {
+          "score": 0.703,
+          "source_file": "level-competence-basic-life-support-first-2023.pdf",
+          "title": "THE LEVEL OF COMPETENCE ON BASIC LIFE SUPPORT AND FIRST AID OF THE NURSING STUDE"
+        },
+        {
+          "score": 0.701,
+          "source_file": "competence-level-basic-life-support-bls-2023.pdf",
+          "title": "COMPETENCE LEVEL ON BASIC LIFE SUPPORT (BLS) OF THE FACULTY OF THE COLLEGE OF HE"
+        },
+        {
+          "score": 0.697,
+          "source_file": "level-competence-basic-life-support-first-2023.pdf",
+          "title": "THE LEVEL OF COMPETENCE ON BASIC LIFE SUPPORT AND FIRST AID OF THE NURSING STUDE"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Yes, there are studies on Basic Life Support (BLS) competence from Camarines Sur Polytechnic Colleges (CSPC). Based on the available thesis contexts:\n\n*   **\"COMPETENCE LEVEL ON BASIC LIFE SUPPORT (BLS) OF THE FACULTY OF THE COLLEGE OF HEALTH SCIENCES OF CAMARINES SUR POLYTECHNIC COLLEGES, NABUA, CAMARINES SUR\" (2023)** assessed the BLS competence (knowledge, skills, and attitude) of faculty members in the College of Health Sciences (nurses, midwives, and doctors).\n*   **\"THE LEVEL OF COMPETENCE ON BASIC LIFE SUPPORT AND FIRST AID OF THE NURSING STUDENTS OF CAMARINES SUR POLYTECHNIC COLLEGES\" (2023)** determined the BLS and first aid competence of second and third-year nursing students. It found that while respondents were moderately competent in knowledge and skills and very satisfactory in attitude, specific areas like saving a drowning person and proper splinting performance required improvement.",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "coffee-shops",
+      "kind": "retrieval",
+      "question": "What studies looked at coffee shops?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.616,
+          "source_file": "customer-satisfaction-coffee-shops-iriga-city-2024.pdf",
+          "title": "CUSTOMER SATISFACTION ON COFFEE SHOPS IN IRIGA CITY"
+        },
+        {
+          "score": 0.606,
+          "source_file": "social-media-marketing-selected-coffee-shops-2024.pdf",
+          "title": "SOCIAL MEDIA MARKETING OF SELECTED COFFEE SHOPS IN NAGA CITY"
+        },
+        {
+          "score": 0.602,
+          "source_file": "social-media-marketing-selected-coffee-shops-2024.pdf",
+          "title": "SOCIAL MEDIA MARKETING OF SELECTED COFFEE SHOPS IN NAGA CITY"
+        },
+        {
+          "score": 0.599,
+          "source_file": "054-288-4421-loc-128-college-tourism-2023.pdf",
+          "title": "(054) 288-4421 loc. 128 College of Tourism, Hospitality and Business Management "
+        },
+        {
+          "score": 0.592,
+          "source_file": "054-288-4421-loc-128-college-tourism-2023.pdf",
+          "title": "(054) 288-4421 loc. 128 College of Tourism, Hospitality and Business Management "
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Based on the thesis context provided, here are the studies and sources that examined coffee shops:\n\n*   **\"CUSTOMER SATISFACTION ON COFFEE SHOPS IN IRIGA CITY\" (2024)** – This thesis (CSPC) investigated customer satisfaction factors in coffee shops within Iriga City, specifically discussing results related to music influence, food research, and millennial lifestyle impacts on design.\n*   **\"SOCIAL MEDIA MARKETING OF SELECTED COFFEE SHOPS IN NAGA CITY\" (2024)** – This CSPC thesis focused on assessing the effectiveness of social media as a marketing tool for selected coffee shops in Naga City. It highlighted coffee shops as \"third places\" for students and youth, discussing demographic profiles, consumer behavior, and the use of platforms like Facebook.\n*   **\"CHALLENGES ENCOUNTERED OF COFFEE SHOPS IN POLANGUI, ALBAY\" (2023)** – Another CSPC thesis that reviewed literature regarding coffee shop adjustments to the \"New Normal\" (e.g., takeout/delivery), challenges in compliance with government guidelines, and the impact of noise on student concentration.\n*   **Grossman, O., & Rachamim, M. (2023)** – A foreign study cited in the context examining whether classical versus pop music influences coffee purchase likelihood.\n*   **Galmarini et al. (2021)** – Research evaluating the impact of music on the dynamic perception of coffee and evoked emotions using TDS and TDE methodologies.\n*   **Susanto et al. (2020)** – A study titled *\"PENGARUH GAYA HIDUP MILENIAL TERHADAP DESAIN ARSITEKTUR KAFE\"* which looks at how millennial lifestyles affect café architectural design.\n*   **Barber, L. B., & Münster, M. B. (2022)** – Research regarding \"Aspects of openness in Hong Kong coffee shops.\"\n*   **Amin et al. (2022)** – A study titled *\"PENGARUH CITA RASA DAN LAYOUT TERHADAP KEPUASAN KONSUMEN DI LETTER COFFEE\"* focusing on taste and layout effects on consumer satisfaction at Letter Coffee.\n*   **Lim et al. (2019)** – Research on ambience and social interaction effects on customer patronage of traditional coffeehouses (kopitiams).\n*   **Haristianti, V. (2021)** – A thesis analyzing the persistence factors of visitors through interior design performance evaluation in the L.R.E Martadinata area of Bandung.\n*   **Waxman, L. K. (2022)** – A work on *\"Designing coffee shops and cafés for community.\"*\n\nNote: All CSPC theses listed (*CUSTOMER SATISFACTION ON COFFEE SHOPS IN IRIGA CITY*, *SOCIAL MEDIA MARKETING OF SELECTED COFFEE SHOPS IN NAGA CITY*, and *CHALLENGES ENCOUNTERED OF COFFEE SHOPS IN POLANGUI, ALBAY*) are unpublished undergraduate works from Camarines Sur Polytechnic Colleges found in the provided text.",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "heritage-sites",
+      "kind": "retrieval",
+      "question": "What theses tackle the conservation of heritage sites?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.599,
+          "source_file": "safeguarding-heritage-sites-rinconada-area-2023.pdf",
+          "title": "SAFEGUARDING OF HERITAGE SITES IN RINCONADA AREA"
+        },
+        {
+          "score": 0.567,
+          "source_file": "conservation-preservation-heritage-sites-ligao-city-2024.pdf",
+          "title": "CONSERVATION AND PRESERVATION OF HERITAGE SITES IN LIGAO CITY, ALBAY"
+        },
+        {
+          "score": 0.567,
+          "source_file": "safeguarding-heritage-sites-rinconada-area-2023.pdf",
+          "title": "SAFEGUARDING OF HERITAGE SITES IN RINCONADA AREA"
+        },
+        {
+          "score": 0.564,
+          "source_file": "conservation-preservation-heritage-sites-ligao-city-2024.pdf",
+          "title": "CONSERVATION AND PRESERVATION OF HERITAGE SITES IN LIGAO CITY, ALBAY"
+        },
+        {
+          "score": 0.546,
+          "source_file": "status-cultural-heritage-tourism-daraga-albay-2023.pdf",
+          "title": "THE STATUS OF CULTURAL HERITAGE TOURISM IN DARAGA, ALBAY"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Based on the provided context, the following CSPC theses tackle the conservation and safeguarding of heritage sites:\n\n*   **\"SAFEGUARDING OF HERITAGE SITES IN RINCONADA AREA\" (2023)**\n    *   This study focused on the historical profile of heritage sites, conservation efforts, and challenges faced in Baao, Buhi, Bula, Iriga, and Nabua. It investigated the validity of heritage sites through supporting documents and recommended a public-private partnership with media to promote them as tourist attractions (*SAFEGUARDING OF HERITAGE SITES IN RINCONADA AREA* 2023).\n    *   Key recommendations included developing Heritage Conservation Management Plans, involving local communities in decision-making, installing barriers or signage, and allocating government funds for conservatory practices (*SAFEGUARDING OF HERITAGE SITES IN RINCONADA AREA* 2023).\n\n*   **\"CONSERVATION AND PRESERVATION OF HERITAGE SITES IN LIGAO CITY, ALBAY\" (2024)**\n    *   This thesis addresses conservation in Ligao City, discussing relevant literature regarding tangible and intangible cultural heritage (ICH), legal frameworks, and challenges such as the aging of practitioners and the impact of foreign cultures (*CONSERVATION AND PRESERVATION OF HERITAGE SITES IN LIGAO CITY, ALBAY* 2024).\n\n*   **\"THE STATUS OF CULTURAL HERITAGE TOURISM IN DARAGA, ALBAY\" (2023)**\n    *   While focused on tourism status, this thesis analyzes cultural heritage conservation through a review of related literature, discussing the significance of tangible sites (like Spanish heritage churches in Albay) and the protection of structures from demolition to preserve their original appearance (*THE STATUS OF CULTURAL HERITAGE TOURISM IN DARAGA, ALBAY* 2023).",
+      "context_precision": 0.8,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "nursing-tracer",
+      "kind": "retrieval",
+      "question": "Is there a tracer study of CSPC nursing graduates?",
+      "filter": {
+        "program": {
+          "$eq": "BSN"
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.746,
+          "source_file": "tracer-study-bachelor-science-nursing-graduates-2023.pdf",
+          "title": "TRACER STUDY OF THE BACHELOR OF SCIENCE IN NURSING GRADUATES OF CAMARINES SUR PO"
+        },
+        {
+          "score": 0.697,
+          "source_file": "tracer-study-bachelor-science-nursing-graduates-2023.pdf",
+          "title": "TRACER STUDY OF THE BACHELOR OF SCIENCE IN NURSING GRADUATES OF CAMARINES SUR PO"
+        },
+        {
+          "score": 0.647,
+          "source_file": "characterizing-clinical-instructors-basis-effective-clinical-2023.pdf",
+          "title": "CHARACTERIZING CLINICAL INSTRUCTORS : BASIS FOR AN EFFECTIVE CLINICAL TEACHING-L"
+        },
+        {
+          "score": 0.641,
+          "source_file": "readiness-new-nursing-graduates-camarines-sur-2023.pdf",
+          "title": "READINESS OF NEW NURSING GRADUATES FROM CAMARINES SUR POLYTECHNIC COLLEGES IN TR"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Yes, there is a tracer study regarding CSPC nursing graduates.\n\nThe specific thesis titled *\"TRACER STUDY OF THE BACHELOR OF SCIENCE IN NURSING GRADUATES OF CAMARINES SUR POLYTECHNIC COLLEGES, BATCH 2020\"* (2023) investigates the employability, location, licensure outcomes (NLE), and professional competencies of the Batch 2020 nursing graduates.\n\nThe study focused on the 29 graduates of the last batch under the BSN ladderized curriculum, revealing details such as their employment status, age distribution, and the college's contribution to their soft and professional competencies.\n\nWould you like assistance with finding more details on this study or looking for other theses related to nursing programs at CSPC?",
+      "context_precision": 0.5,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "shorthand-bsoa",
+      "kind": "retrieval",
+      "question": "What did office administration researchers find about learning shorthand?",
+      "filter": {
+        "program": {
+          "$eq": "BSOA"
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.693,
+          "source_file": "factors-affecting-comprehension-bachelor-science-office-2023.pdf",
+          "title": "FACTORS AFFECTING THE COMPREHENSION OF BACHELOR OF SCIENCE IN OFFICE ADMINISTRAT"
+        },
+        {
+          "score": 0.677,
+          "source_file": "factors-affecting-comprehension-bachelor-science-office-2023.pdf",
+          "title": "FACTORS AFFECTING THE COMPREHENSION OF BACHELOR OF SCIENCE IN OFFICE ADMINISTRAT"
+        },
+        {
+          "score": 0.66,
+          "source_file": "exploring-machine-shorthand-learning-experiences-bsoa-2023.pdf",
+          "title": "EXPLORING THE MACHINE SHORTHAND LEARNING EXPERIENCES OF BSOA STUDENTS: A COMPREH"
+        },
+        {
+          "score": 0.65,
+          "source_file": "exploring-machine-shorthand-learning-experiences-bsoa-2023.pdf",
+          "title": "EXPLORING THE MACHINE SHORTHAND LEARNING EXPERIENCES OF BSOA STUDENTS: A COMPREH"
+        }
+      ],
+      "filter_ok": true,
+      "hit": true,
+      "recall": 0.6666666666666666,
+      "answer": "Based on the provided thesis context, office administration researchers (*FACTORS AFFECTING THE COMPREHENSION OF BACHELOR OF SCIENCE IN OFFICE ADMINISTRATION STUDENTS IN SHORTHAND AT CAMARines Sur Polytechnic Colleges* [2023]) found that BSOA students face significant difficulties in comprehending shorthand, though overall comprehension levels are considered \"satisfactory\" with an average weighted mean of 2.5 (Very Satisfactory).\n\nSpecific findings regarding what affects learning include:\n*   **Most Affected Areas:** Students are most challenged by **English vocabulary knowledge** (weighted mean 2.83) and **listening skills** (weighted mean 2.84).\n*   **Least Affected Areas:** Students perform best in **transcribing shorthand immediately after dictation** (weighted mean 2.55) and taking dictation of 85–100 words per minute (weighted mean 2.38).\n*   **Contributing Factors:** Researchers identified hurdles such as limited English proficiency, lack of interest, poor ventilation, uncomfortable seating, insufficient facilities, inadequate typewriters, and insufficient teaching support from instructors (*FACTORS AFFECTING THE COMPREHENSION...* [2023]).\n*   **Machine Shorthand Context:** A separate study on machine shorthand (*EXPLORING THE MACHINE SHORTHAND LEARNING EXPERIENCES OF BSOA STUDENTS: A COMPREHENSIVE STUDY* [2023]) noted that while **speed** is \"seldom encountered\" as a problem, **listening skills** and **reading comprehension** are \"often encountered\" as problems among third-year students.",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "chatgpt-language",
+      "kind": "retrieval",
+      "question": "Do we have research about students using ChatGPT for language learning?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.751,
+          "source_file": "exploring-language-studies-students-perceptions-chatgpt-2024.pdf",
+          "title": "EXPLORING LANGUAGE STUDIES STUDENTS’ PERCEPTIONS OF CHATGPT AS A LANGUAGE LEARNI"
+        },
+        {
+          "score": 0.743,
+          "source_file": "exploring-language-studies-students-perceptions-chatgpt-2024.pdf",
+          "title": "EXPLORING LANGUAGE STUDIES STUDENTS’ PERCEPTIONS OF CHATGPT AS A LANGUAGE LEARNI"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Yes, we do. According to the available thesis context, there is a study titled *\"EXPLORING LANGUAGE STUDIES STUDENTS’ PERCEPTIONS OF CHATGPT AS A LANGUAGE LEARNING TOOL\"* (ABELS, 2024).\n\nThe introduction of this thesis states that it aims to explore language studies students' opinions regarding ChatGPT as a language learning tool, specifically investigating their perceptions, preferences, and experiences to inform its integration into language curricula.\n\nRegarding the specific findings on language skills, the excerpt notes:\n*   **Speaking:** The study found that students held a \"neutral\" perception regarding ChatGPT's ability to improve speaking proficiency, pronunciation, and language usage.\n*   **Listening:** Similarly, the thesis reports a \"neutral\" stance among students regarding the utility of ChatGPT for listening comprehension, noting they did not strongly associate the tool with improvements in this area.\n\nWould you like to explore other theses in the collection or get help finding specific resources related to AI in education?",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "taylor-swift",
+      "kind": "retrieval",
+      "question": "Is there a thesis analyzing a Taylor Swift album?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.716,
+          "source_file": "anatomizing-taylor-swift-s-1989-taylor-2024.pdf",
+          "title": "ANATOMIZING TAYLOR SWIFT’S ‘1989 (TAYLOR’S VERSION)’ ALBUM"
+        },
+        {
+          "score": 0.71,
+          "source_file": "anatomizing-taylor-swift-s-1989-taylor-2024.pdf",
+          "title": "ANATOMIZING TAYLOR SWIFT’S ‘1989 (TAYLOR’S VERSION)’ ALBUM"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Yes, there is a thesis analyzing a Taylor Swift album.\n\nAccording to the provided context, the study is titled **\"ANATOMIZING TAYLOR SWIFT'S '1989 (TAYLOR'S VERSION)' ALBUM\"** (ABELS 2024) (Abels, 2024). This research uses foregrounding components and figurative language analysis to examine the album, which consists of twenty-one (21) songs.",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "library-noise",
+      "kind": "retrieval",
+      "question": "What research exists on library noise and its effect on learning?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.75,
+          "source_file": "factors-affecting-library-noise-pollution-students-2025.pdf",
+          "title": "FACTORS AFFECTING LIBRARY NOISE POLLUTION ON STUDENTS' LEARNING ENVIRONMENT"
+        },
+        {
+          "score": 0.747,
+          "source_file": "factors-affecting-library-noise-pollution-students-2025.pdf",
+          "title": "FACTORS AFFECTING LIBRARY NOISE POLLUTION ON STUDENTS' LEARNING ENVIRONMENT"
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "answer": "Based on the provided thesis context, here is what the research says about library noise and its effect on learning:\n\n**Core Findings from the Thesis**\nThe thesis **\"FACTORS AFFECTING LIBRARY NOISE POLLUTION ON STUDENTS' LEARNING ENVIRONMENT\" (2025)** highlights that noise pollution is a major concern in library environments. Excessive noise levels can:\n*   Interrupt study concentration.\n*   Impair reading comprehension.\n*   Increase stress levels among library users.\n*   Cause \"emotional distractions\" that influence perceived performance and task complexity [9, 11, 43].\n\n**Key Insights on Library Design and Space**\nThe study notes that the coexistence of quiet activities (reading, writing) and noisy activities (talking, eating) in shared library spaces can negatively affect the educational atmosphere. It suggests that:\n*   The absence of specifically designated quiet areas worsens these problems for students focused on study-oriented tasks [46].\n*   There is a need for a balanced approach where libraries provide both quiet study areas and spaces for discussions/collaborative learning to adapt to evolving student needs [47].\n*   Strategies to mitigate noise include soundproofing (especially for libraries near busy areas) and implementing noise-reducing technologies like acoustic panels [48].\n\n**Note on Related Context**\nWhile the thesis mentions health issues related to high noise levels in general settings (such as those studied by Rahman regarding women and young people in Bangladesh), the specific focus remains on the library environment's impact on student engagement, motivation, and concentration [3, 4, 42].",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "blis-employability",
+      "kind": "retrieval",
+      "question": "How employable are the library and information science graduates of CSPC?",
+      "filter": {
+        "program": {
+          "$eq": "BLIS"
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.708,
+          "source_file": "employability-bachelor-library-information-science-graduates-2025.pdf",
+          "title": "EMPLOYABILITY OF THE BACHELOR OF LIBRARY AND INFORMATION SCIENCE GRADUATES OF CA"
+        },
+        {
+          "score": 0.701,
+          "source_file": "employability-bachelor-library-information-science-graduates-2025.pdf",
+          "title": "EMPLOYABILITY OF THE BACHELOR OF LIBRARY AND INFORMATION SCIENCE GRADUATES OF CA"
+        }
+      ],
+      "filter_ok": true,
+      "hit": true,
+      "recall": 1.0,
+      "answer": "I couldn't find specific statistics on overall unemployment rates or direct employer ratings in the provided text, but the thesis *\"EMPLOYABILITY OF THE BACHELOR OF LIBRARY AND INFORMATION SCIENCE GRADUATES OF CAMARINES SUR POLYTECHNIC COLLEGES\"* (2025) offers detailed insights into their skill levels and job placement status.\n\nAccording to the findings from this study:\n\n*   **High Level of Employability:** The researchers concluded that BLIS graduates possess a **high level of employability**. This was based on the finding that **ethics and values** were the most highly acquired skill (weighted mean of 3.75), followed closely by cultural competencies and lifelong learning skills (3.60–3.62).\n*   **Areas for Improvement:** While highly employable overall, the study identified that **good oral and written communication skills** (3.49), **leadership skills** (3.52), and **customer service orientation** (3.59) were ranked lower. The thesis recommends specific interventions to strengthen these three areas to make graduates more competitive.\n*   **Graduate Profile:** Out of 78 respondents surveyed:\n    *   **51.3%** were employed outside the Bicol region (NCR included).\n    *   **64** (82.1%) were female.\n    *   **38.5%** were regular employees, while others held contract, probationary, or self-employed positions.\n    *   The majority of respondents were registered librarians.\n\nIn summary, the data suggests that CSPC BLIS graduates are well-prepared, particularly in professional ethics and cultural competencies, though they may benefit from additional training in communication and leadership to maximize their employability.\n\nWould you like help searching for other CSPC theses on career guidance or specific library science topics?",
+      "context_precision": 1.0,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "entrep-2023-2024",
+      "kind": "retrieval",
+      "question": "What entrepreneurship studies were done between 2023 and 2024?",
+      "filter": {
+        "program": {
+          "$eq": "BSENTREP"
+        },
+        "year": {
+          "$gte": 2023,
+          "$lte": 2024
+        }
+      },
+      "retrieved": [
+        {
+          "score": 0.488,
+          "source_file": "plaab-s-snack-house-2023.pdf",
+          "title": "PLAAB’s Snack House"
+        },
+        {
+          "score": 0.475,
+          "source_file": "republic-phili-ppines-camarines-sur-polytechnic-2023.pdf",
+          "title": "Republic of the Phili ppines CAMARINES SUR POLYTECHNIC COLLEGES Nabua, Camarines"
+        },
+        {
+          "score": 0.469,
+          "source_file": "daruna-2024.pdf",
+          "title": "DARUNA"
+        },
+        {
+          "score": 0.468,
+          "source_file": "republic-phili-ppines-camarines-sur-polytechnic-2023.pdf",
+          "title": "Republic of the Phili ppines CAMARINES SUR POLYTECHNIC COLLEGES Nabua, Camarines"
+        },
+        {
+          "score": 0.466,
+          "source_file": "pnc-enterprise-2024.pdf",
+          "title": "PNC ENTERPRISE"
+        }
+      ],
+      "filter_ok": true,
+      "hit": true,
+      "answer": "Hello! I am **Adal**, your academic librarian assistant at Camarines Sur Polytechnic Colleges (CSPC).\n\nBased on the local theses in our collection, there are **three** entrepreneurship studies conducted between 2023 and 2024 found in our database:\n\n*   **\"PLAAB's Snack House\"** (*PLAAB's Snack House*, 2023) – A study on the marketing plan for a snack business focusing on pricing and word-of-mouth strategies.\n*   **\"TOFU CORNER ENTERPRISE\"** (*Republic of the Philippines CAMARINES SUR POLYTECHNIC COLLEGES... TOFU CORNER ENTERPRISE*, 2023) – A project detailing the marketing and sales volume projections for a tofu siomai venture in Nabua.\n*   **\"DARUNA\"** (*DARUNA*, 2024) – A thesis discussing the marketing plan for a fruit-based ice cream business, including the use of food carts and social media engagement.\n*   **\"PNC ENTERPRISE\"** (*PNC ENTERPRISE*, 2024) – A study on a pili nut chutney business utilizing a hybrid distribution approach and trade fairs.\n\nWould you like to find specific marketing strategies from these studies or need help formatting citations for these theses?",
+      "context_precision": 0.8,
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "quantum",
+      "kind": "out_of_scope",
+      "question": "Do you have theses about quantum computing?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.551,
+          "source_file": "impact-computer-technologies-learning-scheme-bachelor-2023.pdf",
+          "title": "THE IMPACT OF COMPUTER TECHNOLOGIES IN LEARNING SCHEME OF BACHELOR OF SCIENCE IN"
+        },
+        {
+          "score": 0.526,
+          "source_file": "metasys-4-0-integrating-advance-database-2023.pdf",
+          "title": "METaSys 4.0: INTEGRATING ADVANCE DATABASE AND USER INTERFACE FOR ENHANCE PERFORM"
+        },
+        {
+          "score": 0.522,
+          "source_file": "impact-computer-technologies-learning-scheme-bachelor-2023.pdf",
+          "title": "THE IMPACT OF COMPUTER TECHNOLOGIES IN LEARNING SCHEME OF BACHELOR OF SCIENCE IN"
+        },
+        {
+          "score": 0.519,
+          "source_file": "web-based-iriga-city-public-library-management-2023.pdf",
+          "title": "WEB-BASED IRIGA CITY PUBLIC LIBRARY MANAGEMENT SYSTEM WITH QR TECHNOLOGY"
+        },
+        {
+          "score": 0.518,
+          "source_file": "uncovering-knowledge-management-practices-academic-cluster-2023.pdf",
+          "title": "UNCOVERING THE KNOWLEDGE MANAGEMENT PRACTICES OF THE ACADEMIC CLUSTER AND RESEAR"
+        }
+      ],
+      "rejected": false,
+      "answer": "No, I couldn't find CSPC theses on quantum computing in the provided context. The available excerpts cover topics like office administration learning schemes, database systems, library management, and knowledge management practices.\n\nWould you like help finding research on related topics, such as emerging technologies in education or information systems?",
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "marine-bio",
+      "kind": "out_of_scope",
+      "question": "What research is there about marine biology at CSPC?",
+      "filter": null,
+      "retrieved": [
+        {
+          "score": 0.585,
+          "source_file": "health-practices-bsn-students-camarines-sur-2023.pdf",
+          "title": "HEALTH PRACTICES OF BSN STUDENTS OF CAMARINES SUR POLYTECHNIC COLLEGES: ITS IMPA"
+        },
+        {
+          "score": 0.566,
+          "source_file": "challenges-encountered-bachelor-science-nursing-students-2023-2.pdf",
+          "title": "CHALLENGES ENCOUNTERED BY BACHELOR OF SCIENCE IN NURSING STUDENTS OF CAMARINES S"
+        },
+        {
+          "score": 0.559,
+          "source_file": "nursing-students-attitude-towards-psychosocial-restorative-2023.pdf",
+          "title": "THE NURSING STUDENTS’ ATTITUDE TOWARDS THE PSYCHOSOCIAL RESTORATIVE HEALTH OF TH"
+        },
+        {
+          "score": 0.558,
+          "source_file": "characterizing-clinical-instructors-basis-effective-clinical-2023.pdf",
+          "title": "CHARACTERIZING CLINICAL INSTRUCTORS : BASIS FOR AN EFFECTIVE CLINICAL TEACHING-L"
+        },
+        {
+          "score": 0.555,
+          "source_file": "characterizing-clinical-instructors-basis-effective-clinical-2023.pdf",
+          "title": "CHARACTERIZING CLINICAL INSTRUCTORS : BASIS FOR AN EFFECTIVE CLINICAL TEACHING-L"
+        }
+      ],
+      "rejected": false,
+      "answer": "I couldn't find CSPC theses on the topic of marine biology in the provided research excerpts.\n\nThe available context consists of three 2023 Bachelor of Science in Nursing (BSN) theses focused on health practices, learning challenges, psychosocial attitudes, and clinical teaching within CSPC's College of Health Sciences.\n\nSince CSPC has a College of Health Sciences and offers programs such as fisheries, there may be marine-related research conducted under different degree programs (e.g., in fisheries or technology) that are not included in the current excerpts. Would you like me to suggest how you could search for marine biology or fisheries-related research at CSPC?",
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 4.0
+    },
+    {
+      "id": "apa",
+      "kind": "general",
+      "question": "How do I cite a journal article in APA 7th edition?",
+      "filter": null,
+      "retrieved": [],
+      "rejected": true,
+      "answer": "Here is how to cite a journal article in APA 7th edition format:\n\n**General Format**\n> Author, A. A., Author, B. B., & Author, C. C. (Year). Title of the article. *Title of the Journal*, *Volume*(Issue), Page range. DOI or URL\n\n**Key Components:**\n*   **Authors:** List up to 20 authors. Use \"et al.\" for 21 or more. Format surnames in all caps only if the name is a heading (usually not in running text).\n*   **Year:** In parentheses.\n*   **Article Title:** In sentence case (only capitalize the first word and proper nouns). It is not italicized.\n*   **Journal Title:** In title case (capitalize major words) and *italicized*.\n*   **Volume:** Italicized.\n*   **Issue:** In parentheses, not italicized (omit if there is no issue number).\n*   **Page Range:** Use hyphen (e.g., 10–25).\n*   **DOI/URL:** Replace the DOI with a permanent link if one exists.\n\nWould you like help finding specific journal articles or formatting references for other types of sources (like books or websites)?",
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    },
+    {
+      "id": "hello",
+      "kind": "smalltalk",
+      "question": "Hello! Who are you?",
+      "filter": null,
+      "retrieved": [],
+      "rejected": true,
+      "answer": "Hello! I am Adal, your academic librarian assistant at Camarines Sur Polytechnic Colleges (CSPC) in Nabua.\n\nWhile no specific CSPC theses matched your greeting, I'm here to help you find local research, assist with thesis topics, or guide you on citation styles and database searches. Is there a specific research topic or library service you'd like to explore today?",
+      "faithful": true,
+      "unsupported_claims": [],
+      "answer_relevance": 5.0
+    }
+  ]
+}
